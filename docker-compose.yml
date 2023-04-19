@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mediawiki:
+    build: .
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dump.xml.gz:/app/dump.xml.gz
+      - ./sb-wiki/settings/LocalSettings.php:/app/LocalSettings.php
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: mediawiki
+      MYSQL_USER: mediawiki
+      MYSQL_PASSWORD: sponsor.ajay.app/donate
+      MARIADB_AUTO_UPGRADE: 1
+      MARIADB_RANDOM_ROOT_PASSWORD: 'true'
