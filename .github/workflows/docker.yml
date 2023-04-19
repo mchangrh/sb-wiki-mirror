@@ -18,27 +18,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: Download db dump
         run: wget https://wiki.sponsor.ajay.app/images/sponsorblock_wiki_current_revisions.xml.gz -O ${DUMP_NAME}
       - name: Start docker-docker-compose
         run: docker-compose up -d
       - name: Check running containers
-        run: sleep 10s && docker ps
-      - name: checkout downloader
+        run: sleep 20s && docker ps
+      - name: Checkout downloader
         uses: actions/checkout@v3
         with:
          repository: mchangrh/exportMediaWiki2HTML
-         ref: shortURL
+         ref: noSSL
          path: export-html
       - uses: actions/setup-python@v4
       - name: run downloader
-        run: cd export-html && pip install -r requirements.txt && python exportMediaWiki2Html.py --url http://localhost:8080 --shortUrl w/
+        run: cd export-html && pip install -r requirements.txt && python exportMediaWiki2Html.py --url http://localhost:8080 --no-ssl --shortUrl w/
+      - name: move Main_Page to index
+        run: cd export-html/export && cp Main_Page.html index.html
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'wiki/localhost:8080'
+          path: 'export-html/export'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2

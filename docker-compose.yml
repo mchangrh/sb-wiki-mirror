@@ -1,10 +1,16 @@
 version: '3'
 
 services:
+  wait:
+    image: hello-world
+    depends_on:
+      mediawiki:
+        condition: service_healthy
   mediawiki:
     build: .
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     links:
       - mariadb
     ports:
@@ -15,9 +21,12 @@ services:
   mariadb:
     image: mariadb:latest
     restart: always
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck.sh", "--su-mysql", "--connect"]
     environment:
       MYSQL_DATABASE: mediawiki
       MYSQL_USER: mediawiki
       MYSQL_PASSWORD: sponsor.ajay.app/donate
       MARIADB_AUTO_UPGRADE: 1
       MARIADB_RANDOM_ROOT_PASSWORD: 'true'
+      MARIADB_MYSQL_LOCALHOST_USER: 'true'
