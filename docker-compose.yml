@@ -1,8 +1,8 @@
-version: '3'
+version: '3.4'
 
 services:
   wait:
-    image: hello-world
+    image: ghcr.io/mchangrh/elfbin:latest
     depends_on:
       mediawiki:
         condition: service_healthy
@@ -11,18 +11,24 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost/w/Main_Page"]
+      interval: 10s
+      timeout: 30s
+      retries: 10
     links:
       - mariadb
     ports:
       - "8080:80"
     volumes:
-      - ./dump.xml.gz:/app/dump.xml.gz
+      - ./sponsorblock_wiki_current_revisions.xml.gz:/app/dump.xml.gz
       - ./sb-wiki/settings/LocalSettings.php:/app/LocalSettings.php
   mariadb:
     image: mariadb:latest
     restart: always
     healthcheck:
       test: ["CMD", "/usr/local/bin/healthcheck.sh", "--su-mysql", "--connect"]
+      interval: 5s
     environment:
       MYSQL_DATABASE: mediawiki
       MYSQL_USER: mediawiki

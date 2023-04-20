@@ -7,5 +7,4 @@ COPY settings/secrets /secrets
 COPY settings/overrides /includes
 COPY entrypoint.sh /entrypoint.sh
 
-HEALTHCHECK CMD curl --fail http://localhost || exit 1
 ENTRYPOINT ["/entrypoint.sh"]
