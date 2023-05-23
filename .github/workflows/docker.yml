@@ -24,13 +24,13 @@ jobs:
           submodules: recursive
       - uses: actions/cache/restore@v3
         with:
-          path: ./${FILENAME}
+          path: ${FILENAME}
           key: current_revisions
       - name: Download db dump
         run: wget https://wiki.sponsor.ajay.app/images/${FILENAME} -N --no-if-modified-since
       - uses: actions/cache/save@v3
         with:
-          path: ./${FILENAME}
+          path: ${FILENAME}
           key: current_revisions
       - run: docker compose up --build -d
       - name: Checkout downloader
