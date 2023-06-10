@@ -27,7 +27,7 @@ jobs:
           path: sponsorblock_wiki_current_revisions.xml.gz
           key: current_revisions
       - name: Download db dump
-        run: wget https://wiki.sponsor.ajay.app/images/${FILENAME} -N --no-if-modified-since
+        run: wget https://wiki.sponsor.ajay.app/images/${FILENAME} -O ${FILENAME}
       - uses: actions/cache/save@v3
         with:
           path: sponsorblock_wiki_current_revisions.xml.gz
