@@ -21,14 +21,17 @@ services:
     ports:
       - "8080:80"
     volumes:
+      - data-mediawiki:/config
       - ./sponsorblock_wiki_current_revisions.xml.gz:/app/dump.xml.gz
-      - ./sb-wiki/settings/LocalSettings.php:/app/LocalSettings.php
+      - ./sb-wiki/mediawiki/settings/LocalSettings.php:/app/LocalSettings.php
   mariadb:
     image: mariadb:latest
     restart: always
     healthcheck:
       test: ["CMD", "/usr/local/bin/healthcheck.sh", "--su-mysql", "--connect"]
       interval: 5s
+    volumes:
+      - data-mariadb:/var/lib/mysql
     environment:
       MYSQL_DATABASE: mediawiki
       MYSQL_USER: mediawiki
@@ -36,3 +39,6 @@ services:
       MARIADB_AUTO_UPGRADE: 1
       MARIADB_RANDOM_ROOT_PASSWORD: 'true'
       MARIADB_MYSQL_LOCALHOST_USER: 'true'
+volumes:
+  data-mariadb:
+  data-mediawiki:
