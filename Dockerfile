@@ -1,4 +1,4 @@
-FROM ghcr.io/mchangrh/sb-wiki:1.39
+FROM ghcr.io/mchangrh/sb-wiki:1.40
 # add configs
 ADD sb-wiki/mediawiki/sb-wikilogo.tar.gz /config/mediawiki/images/
 

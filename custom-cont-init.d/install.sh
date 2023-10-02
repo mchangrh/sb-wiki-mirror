@@ -8,9 +8,12 @@ if [ ! -f ${DUMP_PATH} ]; then
     DUMP_PATH=/tmp/dump.xml.gz
 fi
 # import and rebuild
-php maintenance/install.php --confpath="/app/www/public" --dbname=mediawiki --dbtype=mysql --dbuser=mediawiki --dbpass="sponsor.ajay.app/donate" --dbserver=mariadb --server="http://localhost:8080" --scriptpath="" --lang=en --pass=sponsor.ajay.app/donate "SponsorBlock" Admin
+php maintenance/run.php install --confpath="/app/www/public" --dbname=mediawiki --dbtype=mysql --dbuser=mediawiki --dbpass="sponsor.ajay.app/donate" --dbserver=mariadb --server="http://localhost:8080" --scriptpath="" --lang=en --pass=sponsor.ajay.app/donate "SponsorBlock" Admin
 cp /app/LocalSettings.php /app/www/public/LocalSettings.php
+echo "*** Importing dump ***"
 echo "Main_Page" >> /app/delete_pages.txt
-php maintenance/deleteBatch.php /app/delete_pages.txt
-php maintenance/importDump.php "${DUMP_PATH}"
-php maintenance/runJobs.php
+php maintenance/run.php deleteBatch /app/delete_pages.txt
+php maintenance/run.php importDump "${DUMP_PATH}"
+php maintenance/run.php runJobs
+php maintenance/run.php update --quick
+echo "*** MediaWiki installed and ready ***"
