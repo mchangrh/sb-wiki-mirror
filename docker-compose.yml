@@ -1,5 +1,3 @@
-version: '3.4'
-
 services:
   wait:
     image: ghcr.io/mchangrh/elfbin:latest
