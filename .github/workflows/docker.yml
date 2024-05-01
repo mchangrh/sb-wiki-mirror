@@ -24,12 +24,6 @@ jobs:
           submodules: recursive
       - name: Download db dump
         run: wget https://wiki.sponsor.ajay.app/images/${FILENAME} -O ${FILENAME}
-      - name: bump local date
-        run: date > last-update
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with: 
-          commit_message: Automated last-update bump
-          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
       - run: docker compose up --build -d
       - name: Checkout downloader
         uses: actions/checkout@v4
@@ -46,3 +40,9 @@ jobs:
         with:
           path: 'export-html/export'
       - uses: actions/deploy-pages@v4
+      - name: bump local date
+        run: date > last-update
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with: 
+          commit_message: Automated last-update bump
+          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
