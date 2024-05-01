@@ -10,7 +10,7 @@ env:
   FILENAME: sponsorblock_wiki_current_revisions.xml.gz
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
   pages: write
 
@@ -28,7 +28,7 @@ jobs:
         run: date > last-update
       - uses: stefanzweifel/git-auto-commit-action@v5
         with: 
-          commit_message: Autodated last-update bump
+          commit_message: Automated last-update bump
           commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
       - run: docker compose up --build -d
       - name: Checkout downloader
